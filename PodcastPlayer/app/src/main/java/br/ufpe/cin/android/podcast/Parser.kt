@@ -99,25 +99,24 @@ object Parser {
         var link: String? = null
         var pubDate: String? = null
         var description: String? = null
+        var downloadLink: String? = null
+        var imageUrl: String? = null
         parser.require(XmlPullParser.START_TAG, null, "item")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
             }
-            val name = parser.name
-            if (name == "title") {
-                title = readData(parser, "title")
-            } else if (name == "link") {
-                link = readData(parser, "link")
-            } else if (name == "pubDate") {
-                pubDate = readData(parser, "pubDate")
-            } else if (name == "description") {
-                description = readData(parser, "description")
-            } else {
-                skip(parser)
+            when (parser.name) {
+                "title" -> title = readData(parser, "title")
+                "link" -> link = readData(parser, "link")
+                "pubDate" -> pubDate = readData(parser, "pubDate")
+                "description" -> description = readData(parser, "description")
+                "enclosure" -> downloadLink = readData(parser, "enclosure")
+                "itunes:image" -> imageUrl = readData(parser, "itunes:image")
+                else -> skip(parser)
             }
         }
-        return ItemFeed(title!!, link!!, pubDate!!, description!!, "carregar o link")
+        return ItemFeed(title!!, link!!, pubDate!!, description!!, downloadLink!!, imageUrl!!)
     }
 
     // Processa tags de forma parametrizada no feed.
