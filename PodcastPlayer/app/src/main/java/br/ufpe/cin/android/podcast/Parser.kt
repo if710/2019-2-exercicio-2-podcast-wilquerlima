@@ -111,8 +111,14 @@ object Parser {
                 "link" -> link = readData(parser, "link")
                 "pubDate" -> pubDate = readData(parser, "pubDate")
                 "description" -> description = readData(parser, "description")
-                "enclosure" -> downloadLink = readData(parser, "enclosure")
-                "itunes:image" -> imageUrl = readData(parser, "itunes:image")
+                "enclosure" -> {
+                    downloadLink = parser.getAttributeValue(null,"url")
+                    skip(parser)
+                }
+                "itunes:image" -> {
+                    imageUrl = parser.getAttributeValue(null,"href")
+                    skip(parser)
+                }
                 else -> skip(parser)
             }
         }

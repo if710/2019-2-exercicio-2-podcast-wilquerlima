@@ -37,13 +37,7 @@ class RecyclerAdapter(private val listFeed: List<ItemFeed>, private val ctx: Con
         }
 
         holder.download.setOnClickListener {
-            try {
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(listFeed[position].downloadLink)
-                ctx.startActivity(i)
-            } catch (e: Exception) {
-                holder.itemView.snackbar(e.message ?: e.toString())
-            }
+            holder.itemView.snackbar("Baixando link = ${itemFeed.downloadLink}")
         }
     }
 
